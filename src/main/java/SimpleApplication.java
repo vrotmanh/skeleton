@@ -2,6 +2,8 @@ import controllers.NetIdController;
 import controllers.ReceiptController;
 import controllers.TagController;
 import dao.ReceiptDao;
+import dao.ReceiptTagDao;
+import generated.tables.ReceiptTags;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
@@ -38,10 +40,12 @@ public class SimpleApplication extends Application<Configuration> {
         // Create any global resources you need here
         org.jooq.Configuration jooqConfig = setupJooq();
         ReceiptDao receiptDao = new ReceiptDao(jooqConfig);
+        ReceiptTagDao receiptTagDao = new ReceiptTagDao(jooqConfig);
 
         // Register all Controllers below.  Don't forget 
         // you need class and method @Path annotations!
         env.jersey().register(new ReceiptController(receiptDao));
+        env.jersey().register(new TagController(receiptTagDao));
         env.jersey().register(new NetIdController());
     }
 }
